@@ -196,7 +196,7 @@
   }
   .card:hover{transform:translateY(-6px);box-shadow:0 16px 34px rgba(138,75,47,.28);}
   .card-img{
-    height:180px;
+    height:220px;
     background:linear-gradient(135deg, var(--sand) 0%, var(--sand-deep) 100%);
     display:flex;align-items:center;justify-content:center;
     color:rgba(91,46,34,.75);
@@ -209,7 +209,7 @@
     font-size:3rem;
     opacity:.18;
   }
-  .card-img img{transition:transform .6s ease;}
+  .card-img img{transition:transform .6s ease;cursor:zoom-in;}
   .card:hover .card-img img{transform:scale(1.06);}
   .card-body{padding:22px 24px 26px;}
   .card-body h3{font-family:'Pretendard Variable','Pretendard','Noto Sans KR',sans-serif;color:var(--dusk-deep);font-size:1.2rem;margin-bottom:10px;}
@@ -579,7 +579,7 @@
   <div class="works">
 
     <div class="card reveal">
-      <div class="card-img"><img src="스크린샷 2026-07-09 160120.png" alt="투탕카멘의 황금 가면" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
+      <div class="card-img"><img src="스크린샷 2026-07-09 160120.png" alt="투탕카멘의 황금 가면" style="width:100%;height:100%;object-fit:contain;" loading="lazy"></div>
       <div class="card-body">
         <h3>작품 1 · 투탕카멘의 황금 가면</h3>
         <p>소년 파라오 투탕카멘의 황금 가면을 3D로 재현한 작품입니다.<br>
@@ -588,7 +588,7 @@
     </div>
 
     <div class="card reveal">
-      <div class="card-img"><img src="스크린샷 2026-07-09 160022.png" alt="고대 이집트 석관" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
+      <div class="card-img"><img src="스크린샷 2026-07-09 160022.png" alt="고대 이집트 석관" style="width:100%;height:100%;object-fit:contain;" loading="lazy"></div>
       <div class="card-body">
         <h3>작품 2 · 고대 이집트 석관</h3>
         <p>화려한 채색 문양이 새겨진 이집트 석관 한 쌍을 모델링했습니다.<br>
@@ -597,7 +597,7 @@
     </div>
 
     <div class="card reveal">
-      <div class="card-img"><img src="스크린샷 2026-07-09 160228.png" alt="스핑크스" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
+      <div class="card-img"><img src="스크린샷 2026-07-09 160228.png" alt="스핑크스" style="width:100%;height:100%;object-fit:contain;" loading="lazy"></div>
       <div class="card-body">
         <h3>작품 3 · 사막의 수호자 스핑크스</h3>
         <p>피라미드를 지키는 스핑크스를 3D로 제작한 작품입니다.<br>
@@ -606,7 +606,7 @@
     </div>
 
     <div class="card reveal">
-      <div class="card-img"><img src="스크린샷 2026-07-09 160247.png" alt="사막의 피라미드" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
+      <div class="card-img"><img src="스크린샷 2026-07-09 160247.png" alt="사막의 피라미드" style="width:100%;height:100%;object-fit:contain;" loading="lazy"></div>
       <div class="card-body">
         <h3>작품 4 · 사막의 피라미드</h3>
         <p>층층이 쌓인 돌계단과 빛나는 정상부가 돋보이는 피라미드입니다.<br>
@@ -615,7 +615,7 @@
     </div>
 
     <div class="card reveal">
-      <div class="card-img"><img src="스크린샷 2026-07-09 160043.png" alt="아부심벨 대신전" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
+      <div class="card-img"><img src="스크린샷 2026-07-09 160043.png" alt="아부심벨 대신전" style="width:100%;height:100%;object-fit:contain;" loading="lazy"></div>
       <div class="card-body">
         <h3>작품 5 · 아부심벨 대신전</h3>
         <p>람세스 2세의 거상이 늘어선 아부심벨 신전을 재현했습니다.<br>
@@ -625,8 +625,8 @@
 
     <div class="card reveal">
       <div class="card-img" style="display:flex;gap:2px;">
-        <img src="완성3D.png" alt="완성 3D" style="width:50%;height:100%;object-fit:cover;" loading="lazy">
-        <img src="전체공간.png" alt="전체 공간" style="width:50%;height:100%;object-fit:cover;" loading="lazy">
+        <img src="완성3D.png" alt="완성 3D" style="width:50%;height:100%;object-fit:contain;" loading="lazy">
+        <img src="전체공간.png" alt="전체 공간" style="width:50%;height:100%;object-fit:contain;" loading="lazy">
       </div>
       <div class="card-body">
         <h3>작품 6 · 완성 3D</h3>
@@ -758,6 +758,11 @@ Lux aeterna in corde meo</pre>
   </div>
 </div>
 
+<!-- 작품 이미지 크게 보기 -->
+<div class="modal" id="imgModal" onclick="closeImgModal()">
+  <img id="imgModalPic" src="" alt="작품 이미지 크게 보기" style="max-width:94%;max-height:92%;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.6);object-fit:contain;">
+</div>
+
 <footer>
   <div style="font-family:'Cinzel',serif;letter-spacing:.35em;font-size:.78rem;opacity:.75;margin-bottom:10px;">LEE JEONG GEUN — FIRST XR PORTFOLIO</div>
   © 2026 이정근 · 첫 XR 포트폴리오
@@ -798,7 +803,16 @@ Lux aeterna in corde meo</pre>
     document.getElementById('vrVideo').pause();
     if(bgmWasPlaying){ bgm.play().then(setBtn).catch(()=>{}); }
   }
-  document.addEventListener('keydown', e=>{if(e.key==='Escape')closeModal();});
+  document.addEventListener('keydown', e=>{if(e.key==='Escape'){closeModal();closeImgModal();}});
+
+  // 작품 이미지 클릭 시 크게 보기
+  function closeImgModal(){ document.getElementById('imgModal').classList.remove('open'); }
+  document.querySelectorAll('.card-img img').forEach(img=>{
+    img.addEventListener('click', ()=>{
+      document.getElementById('imgModalPic').src = img.src;
+      document.getElementById('imgModal').classList.add('open');
+    });
+  });
 
   // 스크롤 등장 애니메이션
   const io = new IntersectionObserver(entries=>{
