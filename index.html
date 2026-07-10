@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이정근의 첫 XR 포트폴리오</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600;700&display=swap');
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+  :root{
+    --sand:#e8c07a;
+    --sand-deep:#c98f4a;
+    --dusk:#8a4b2f;
+    --dusk-deep:#5b2e22;
+    --sky-top:#f7d9a0;
+    --sky-mid:#f2a65e;
+    --sky-low:#d96f3f;
+    --cream:#fff6e8;
+    --gold:#f5c66d;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--dusk-deep);
+    background:linear-gradient(#f7e3bd, #f3d3a0);
+  }
+
+  /* ===== 첫 화면 (히어로) ===== */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    min-height:100dvh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:60px 24px 140px;
+    overflow:hidden;
+    background:linear-gradient(to bottom, var(--sky-top) 0%, var(--sky-mid) 45%, var(--sky-low) 78%, var(--dusk) 100%);
+  }
+  /* 태양 */
+  .sun{
+    position:absolute;
+    bottom:120px; left:50%;
+    transform:translateX(-50%);
+    width:180px; height:180px;
+    border-radius:50%;
+    background:radial-gradient(circle, #ffe9b0 0%, #ffcf7a 55%, rgba(255,190,110,0) 75%);
+    box-shadow:0 0 120px 60px rgba(255,200,120,.45);
+  }
+  /* 사막 지평선 + 피라미드 + 신전 실루엣 */
+  .horizon{
+    position:absolute;
+    bottom:0; left:0; right:0;
+    height:230px;
+    pointer-events:none;
+  }
+  .horizon svg{width:100%;height:100%;display:block;}
+  .hero-content{position:relative;z-index:2;}
+  .profile{
+    width:170px;height:170px;
+    border-radius:50%;
+    margin:0 auto 26px;
+    background:rgba(255,246,232,.55);
+    border:4px solid var(--cream);
+    box-shadow:0 8px 30px rgba(91,46,34,.35);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--dusk);
+    font-size:.95rem;
+    overflow:hidden;
+  }
+  .hero h1{
+    font-family:'Pretendard Variable','Pretendard','Noto Sans KR',sans-serif;
+    font-weight:700;
+    font-size:clamp(1.9rem, 5vw, 3.1rem);
+    color:var(--cream);
+    text-shadow:0 3px 14px rgba(91,46,34,.5);
+    letter-spacing:.02em;
+    margin-bottom:22px;
+  }
+  .intro{
+    font-family:'Gowun Batang','Noto Serif KR',serif;
+    max-width:700px;
+    margin:0 auto;
+    background:rgba(91,46,34,.32);
+    backdrop-filter:blur(3px);
+    border:1px solid rgba(255,246,232,.35);
+    border-radius:16px;
+    padding:20px 28px;
+    color:var(--cream);
+    line-height:1.9;
+    font-size:1.05rem;
+  }
+  .scroll-hint{
+    position:absolute;bottom:26px;left:50%;transform:translateX(-50%);
+    color:var(--cream);opacity:.85;font-size:.9rem;z-index:2;
+    animation:bob 2.2s ease-in-out infinite;
+  }
+  @keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
+
+  /* ===== 상단 내비게이션 ===== */
+  .nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:16px 34px;
+    background:linear-gradient(to bottom, rgba(43,20,14,.5), rgba(43,20,14,.18));
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(255,246,232,.14);
+  }
+  .nav .logo{
+    font-family:'Cinzel',serif;
+    color:var(--cream);text-decoration:none;
+    letter-spacing:.24em;font-size:.95rem;font-weight:700;
+  }
+  .nav-links a{
+    color:var(--cream);text-decoration:none;margin-left:28px;
+    font-size:.92rem;letter-spacing:.08em;opacity:.85;
+    transition:color .25s ease, opacity .25s ease;
+  }
+  .nav-links a:hover{color:var(--gold);opacity:1;}
+  @media (max-width:560px){
+    .nav{padding:12px 16px;}
+    .nav .logo{font-size:.78rem;letter-spacing:.12em;}
+    .nav-links a{margin-left:14px;font-size:.84rem;}
+  }
+
+  /* ===== 섹션 라벨 ===== */
+  .eyebrow{
+    font-family:'Cinzel',serif;
+    text-align:center;
+    letter-spacing:.42em;
+    font-size:.78rem;
+    color:var(--sky-low);
+    margin-bottom:12px;
+  }
+  .hero-eyebrow{
+    font-family:'Cinzel',serif;
+    letter-spacing:.5em;
+    font-size:.85rem;
+    color:#ffe9b8;
+    text-shadow:0 2px 10px rgba(91,46,34,.5);
+    margin-bottom:18px;
+  }
+
+  /* ===== 스크롤 등장 애니메이션 ===== */
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1);
+  }
+  .reveal.visible{opacity:1;transform:none;}
+  .works .card:nth-child(2){transition-delay:.08s;}
+  .works .card:nth-child(3){transition-delay:.16s;}
+  .works .card:nth-child(4){transition-delay:.08s;}
+  .works .card:nth-child(5){transition-delay:.16s;}
+  .works .card:nth-child(6){transition-delay:.24s;}
+
+  /* ===== 공통 섹션 ===== */
+  section{padding:80px 24px;max-width:1050px;margin:0 auto;scroll-margin-top:76px;}
+  .section-title{
+    font-family:'Pretendard Variable','Pretendard','Noto Sans KR',sans-serif;
+    font-weight:700;
+    letter-spacing:.03em;
+    text-align:center;
+    font-size:2rem;
+    color:var(--dusk-deep);
+    margin-bottom:14px;
+  }
+  .section-title::after{
+    content:"";
+    display:block;
+    width:70px;height:4px;
+    margin:14px auto 0;
+    border-radius:2px;
+    background:linear-gradient(90deg, var(--gold), var(--sky-low));
+  }
+  .section-sub{text-align:center;color:var(--dusk-deep);opacity:.85;margin-bottom:48px;font-size:1rem;}
+
+  /* ===== 작품 카드 ===== */
+  .works{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+    gap:28px;
+  }
+  .card{
+    background:var(--cream);
+    border-radius:20px;
+    border:1px solid rgba(138,75,47,.15);
+    overflow:hidden;
+    box-shadow:0 10px 26px rgba(138,75,47,.18);
+    transition:transform .25s ease, box-shadow .25s ease;
+    display:flex;flex-direction:column;
+  }
+  .card:hover{transform:translateY(-6px);box-shadow:0 16px 34px rgba(138,75,47,.28);}
+  .card-img{
+    height:180px;
+    background:linear-gradient(135deg, var(--sand) 0%, var(--sand-deep) 100%);
+    display:flex;align-items:center;justify-content:center;
+    color:rgba(91,46,34,.75);
+    font-size:.92rem;
+    position:relative;
+  }
+  .card-img::before{
+    content:"▲";
+    position:absolute;
+    font-size:3rem;
+    opacity:.18;
+  }
+  .card-img img{transition:transform .6s ease;}
+  .card:hover .card-img img{transform:scale(1.06);}
+  .card-body{padding:22px 24px 26px;}
+  .card-body h3{font-family:'Pretendard Variable','Pretendard','Noto Sans KR',sans-serif;color:var(--dusk-deep);font-size:1.2rem;margin-bottom:10px;}
+  .card-body p{color:var(--dusk);line-height:1.7;font-size:.95rem;}
+
+  /* ===== 테마곡 ===== */
+  .theme-song{
+    background:linear-gradient(120deg, var(--dusk) 0%, var(--dusk-deep) 100%);
+    border-radius:22px;
+    padding:46px 36px;
+    text-align:center;
+    color:var(--cream);
+    box-shadow:0 12px 30px rgba(91,46,34,.3);
+  }
+  .theme-song .note{font-size:2.2rem;margin-bottom:10px;}
+  .theme-song h3{font-family:'Cinzel','Noto Serif KR',serif;letter-spacing:.1em;font-size:1.5rem;margin-bottom:8px;}
+  .theme-song p{opacity:.85;margin-bottom:26px;line-height:1.8;}
+  .lyrics{
+    margin-top:30px;
+    text-align:left;
+    background:rgba(255,246,232,.08);
+    border:1px solid rgba(255,246,232,.25);
+    border-radius:14px;
+    padding:14px 20px;
+  }
+  .lyrics summary{
+    cursor:pointer;
+    text-align:center;
+    font-weight:600;
+    color:var(--gold);
+    padding:4px 0;
+    list-style-position:inside;
+  }
+  .lyrics-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+    margin-top:18px;
+    max-height:340px;
+    overflow-y:auto;
+  }
+  .lyrics-grid pre{
+    font-family:inherit;
+    white-space:pre-wrap;
+    font-size:.92rem;
+    line-height:1.75;
+    color:var(--cream);
+    opacity:.92;
+  }
+  @media (max-width:640px){.lyrics-grid{grid-template-columns:1fr;}}
+  .btn{
+    display:inline-block;
+    cursor:pointer;
+    padding:14px 38px;
+    border-radius:999px;
+    font-size:1.05rem;
+    font-weight:600;
+    text-decoration:none;
+    cursor:pointer;
+    border:none;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .btn:hover{transform:scale(1.05);}
+  .btn:active{transform:scale(.97);}
+  a:focus-visible, button:focus-visible, summary:focus-visible{
+    outline:3px solid var(--gold);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .reveal{opacity:1;transform:none;transition:none;}
+    .scroll-hint{animation:none;}
+    .card, .card-img img, .btn{transition:none;}
+    .card:hover{transform:none;}
+    .card:hover .card-img img{transform:none;}
+  }
+  .btn-gold{
+    background:linear-gradient(90deg, var(--gold), var(--sand-deep));
+    color:var(--dusk-deep);
+    box-shadow:0 6px 18px rgba(245,198,109,.45);
+  }
+
+  /* ===== VR 전시 ===== */
+  .vr-section{text-align:center;}
+  .btn-vr{
+    background:linear-gradient(90deg, var(--sky-low), var(--dusk));
+    color:var(--cream);
+    font-size:1.15rem;
+    padding:18px 48px;
+    box-shadow:0 8px 22px rgba(217,111,63,.45);
+  }
+  /* 모달 */
+  .modal{
+    display:none;
+    position:fixed;inset:0;
+    background:rgba(43,20,14,.85);
+    z-index:100;
+    align-items:center;justify-content:center;
+    padding:24px;
+  }
+  .modal.open{display:flex;}
+  .modal-box{
+    width:min(880px, 100%);
+    background:var(--dusk-deep);
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+  }
+  .modal-head{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:14px 20px;
+    color:var(--cream);
+  }
+  .modal-close{
+    background:none;border:none;color:var(--cream);
+    font-size:1.6rem;cursor:pointer;line-height:1;
+  }
+  .video-wrap{position:relative;padding-top:56.25%;background:#000;}
+  .video-wrap iframe, .video-wrap .video-placeholder{
+    position:absolute;inset:0;width:100%;height:100%;border:0;
+  }
+  .video-placeholder{
+    display:flex;flex-direction:column;gap:10px;
+    align-items:center;justify-content:center;
+    color:var(--sand);
+    background:linear-gradient(135deg, #3a2018, #241310);
+    font-size:1rem;text-align:center;padding:20px;
+  }
+
+  footer{
+    text-align:center;
+    padding:36px 20px 46px;
+    color:var(--cream);
+    background:linear-gradient(to bottom, var(--dusk), var(--dusk-deep));
+    font-size:.9rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== 상단 내비게이션 ===== -->
+<nav class="nav">
+  <a class="logo" href="#home">LEE JEONG GEUN</a>
+  <div class="nav-links">
+    <a href="#home">홈</a>
+    <a href="#works">작품</a>
+    <a href="#song">테마곡</a>
+    <a href="#vr">VR 전시</a>
+  </div>
+</nav>
+
+<!-- ===== 첫 화면 ===== -->
+<header class="hero" id="home">
+  <div class="sun"></div>
+  <div class="hero-content">
+    <div class="profile"><img src="프로필이미지.png" alt="프로필 이미지" style="width:100%;height:100%;object-fit:cover;"></div>
+    <p class="hero-eyebrow">XR PORTFOLIO — 2026</p>
+    <h1>이정근의 첫 XR 포트폴리오</h1>
+    <div class="intro">
+      안녕하세요, 가상과 현실의 경계를 탐험하는 XR 크리에이터 이정근입니다.<br>
+      VR·AR 기술로 상상 속 공간을 직접 걸어볼 수 있는 경험으로 만듭니다.<br>
+      이곳은 제 첫 여정을 담은 작은 사막의 전시관입니다.
+    </div>
+  </div>
+  <!-- 사막 풍경: 입체감 있는 피라미드 + 신전 -->
+  <div class="horizon">
+    <svg viewBox="0 0 1200 230" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- 노을빛을 받는 면 -->
+        <linearGradient id="pyrLit" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#f6cd8a"/>
+          <stop offset="0.5" stop-color="#d99257"/>
+          <stop offset="1" stop-color="#a35d33"/>
+        </linearGradient>
+        <!-- 그늘진 면 -->
+        <linearGradient id="pyrShade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#7a3b23"/>
+          <stop offset="1" stop-color="#411f13"/>
+        </linearGradient>
+        <linearGradient id="duneFar" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#d1915a"/>
+          <stop offset="1" stop-color="#9c5a33"/>
+        </linearGradient>
+        <linearGradient id="duneMid" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#9c5631"/>
+          <stop offset="1" stop-color="#6b3421"/>
+        </linearGradient>
+        <linearGradient id="duneNear" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#6b3421"/>
+          <stop offset="1" stop-color="#391b11"/>
+        </linearGradient>
+        <!-- 기둥: 좌우 명암으로 둥근 느낌 -->
+        <linearGradient id="column" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#5f2f1e"/>
+          <stop offset="0.35" stop-color="#e0a668"/>
+          <stop offset="0.6" stop-color="#c78b52"/>
+          <stop offset="1" stop-color="#4a2416"/>
+        </linearGradient>
+        <linearGradient id="templeLit" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#eab273"/>
+          <stop offset="1" stop-color="#9c5a33"/>
+        </linearGradient>
+        <radialGradient id="horizonGlow" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stop-color="#ffdf9e" stop-opacity="0.85"/>
+          <stop offset="1" stop-color="#ffdf9e" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <!-- 지평선의 태양빛 반사 -->
+      <ellipse cx="600" cy="150" rx="430" ry="70" fill="url(#horizonGlow)"/>
+
+      <!-- 아지랑이 낀 원경 피라미드 -->
+      <polygon points="640,138 555,168 725,168" fill="#c2814d" opacity="0.45"/>
+      <polygon points="640,138 725,168 690,168" fill="#8a4b2f" opacity="0.45"/>
+
+      <!-- 뒤쪽 모래 언덕 -->
+      <path d="M0,150 Q220,118 430,142 T820,136 T1200,146 L1200,230 L0,230 Z" fill="url(#duneFar)" opacity="0.8"/>
+
+      <!-- 대피라미드 -->
+      <g>
+        <polygon points="235,30 108,190 302,190" fill="url(#pyrLit)"/>
+        <polygon points="235,30 302,190 360,190" fill="url(#pyrShade)"/>
+        <!-- 정상 캡스톤 반짝임 -->
+        <polygon points="235,30 222,47 248,47" fill="#ffe9b8" opacity="0.9"/>
+        <!-- 석재 단 층 -->
+        <g stroke="#5b2e22" stroke-width="1" opacity="0.22">
+          <line x1="212" y1="60" x2="258" y2="60"/>
+          <line x1="196" y1="82" x2="272" y2="82"/>
+          <line x1="180" y1="104" x2="284" y2="104"/>
+          <line x1="163" y1="126" x2="296" y2="126"/>
+          <line x1="146" y1="148" x2="308" y2="148"/>
+          <line x1="128" y1="170" x2="322" y2="170"/>
+        </g>
+        <!-- 모서리 하이라이트 -->
+        <line x1="235" y1="30" x2="302" y2="190" stroke="#ffd9a0" stroke-width="1.6" opacity="0.55"/>
+        <!-- 바닥 그림자 -->
+        <ellipse cx="330" cy="192" rx="120" ry="9" fill="#2e150c" opacity="0.35"/>
+      </g>
+
+      <!-- 두 번째 피라미드 -->
+      <g>
+        <polygon points="428,84 348,190 470,190" fill="url(#pyrLit)"/>
+        <polygon points="428,84 470,190 508,190" fill="url(#pyrShade)"/>
+        <g stroke="#5b2e22" stroke-width="1" opacity="0.2">
+          <line x1="410" y1="112" x2="447" y2="112"/>
+          <line x1="393" y1="138" x2="460" y2="138"/>
+          <line x1="374" y1="164" x2="474" y2="164"/>
+        </g>
+        <line x1="428" y1="84" x2="470" y2="190" stroke="#ffd9a0" stroke-width="1.4" opacity="0.5"/>
+        <ellipse cx="490" cy="192" rx="80" ry="7" fill="#2e150c" opacity="0.3"/>
+      </g>
+
+      <!-- 오벨리스크 -->
+      <g>
+        <polygon points="762,96 756,196 770,196" fill="url(#templeLit)"/>
+        <polygon points="762,96 770,196 776,196" fill="url(#pyrShade)"/>
+        <polygon points="766,82 756,98 776,98" fill="#f2bd7c"/>
+        <ellipse cx="770" cy="197" rx="22" ry="4" fill="#2e150c" opacity="0.3"/>
+      </g>
+
+      <!-- 신전 -->
+      <g>
+        <!-- 페디먼트(지붕) -->
+        <polygon points="806,74 1064,74 1035,48 835,48" fill="url(#templeLit)"/>
+        <polygon points="806,74 1064,74 1058,86 812,86" fill="#6b3421"/>
+        <!-- 엔타블러처 -->
+        <rect x="812" y="86" width="246" height="14" fill="url(#templeLit)"/>
+        <rect x="812" y="98" width="246" height="4" fill="#411f13" opacity="0.6"/>
+        <!-- 안쪽 어둠(깊이감) -->
+        <rect x="824" y="102" width="222" height="80" fill="#33170e"/>
+        <!-- 안쪽 문 -->
+        <rect x="916" y="122" width="40" height="60" fill="#1d0d07"/>
+        <rect x="912" y="116" width="48" height="8" fill="#4a2416"/>
+        <!-- 기둥들 -->
+        <g>
+          <rect x="828" y="102" width="20" height="80" rx="2" fill="url(#column)"/>
+          <rect x="870" y="102" width="20" height="80" rx="2" fill="url(#column)"/>
+          <rect x="980" y="102" width="20" height="80" rx="2" fill="url(#column)"/>
+          <rect x="1022" y="102" width="20" height="80" rx="2" fill="url(#column)"/>
+          <!-- 기둥 머리 -->
+          <rect x="825" y="100" width="26" height="6" fill="#e0a668"/>
+          <rect x="867" y="100" width="26" height="6" fill="#e0a668"/>
+          <rect x="977" y="100" width="26" height="6" fill="#e0a668"/>
+          <rect x="1019" y="100" width="26" height="6" fill="#e0a668"/>
+        </g>
+        <!-- 계단 기단 -->
+        <rect x="818" y="182" width="234" height="8" fill="url(#templeLit)"/>
+        <rect x="808" y="190" width="254" height="8" fill="#8a4b2f"/>
+        <rect x="798" y="198" width="274" height="8" fill="#6b3421"/>
+        <ellipse cx="940" cy="208" rx="150" ry="8" fill="#2e150c" opacity="0.3"/>
+      </g>
+
+      <!-- 중간 모래 언덕 -->
+      <path d="M0,186 Q260,164 520,182 T1010,178 T1200,186 L1200,230 L0,230 Z" fill="url(#duneMid)"/>
+
+      <!-- 피라미드 왼편 파라오 좌상 한 쌍 (언덕 앞) -->
+      <ellipse cx="62" cy="196" rx="48" ry="5" fill="#2e150c" opacity="0.35"/>
+      <g transform="translate(30,36) scale(0.85)">
+        <rect x="0" y="176" width="30" height="8" fill="url(#templeLit)"/>
+        <rect x="0" y="184" width="30" height="4" fill="#4a2416"/>
+        <rect x="6" y="156" width="18" height="20" fill="url(#pyrLit)"/>
+        <polygon points="7,156 23,156 21,130 9,130" fill="url(#pyrLit)"/>
+        <rect x="5" y="150" width="20" height="5" rx="2" fill="#c78b52"/>
+        <polygon points="8,130 22,130 20,114 10,114" fill="url(#templeLit)"/>
+        <rect x="12" y="118" width="6" height="9" rx="2" fill="#f2bd7c"/>
+        <polygon points="12,114 18,114 15,100" fill="#e0a668"/>
+        <rect x="7" y="132" width="5" height="44" fill="#411f13" opacity="0.35"/>
+        <line x1="23" y1="130" x2="24" y2="176" stroke="#ffd9a0" stroke-width="1.2" opacity="0.6"/>
+      </g>
+      <g transform="translate(64,36) scale(0.85)">
+        <rect x="0" y="176" width="30" height="8" fill="url(#templeLit)"/>
+        <rect x="0" y="184" width="30" height="4" fill="#4a2416"/>
+        <rect x="6" y="156" width="18" height="20" fill="url(#pyrLit)"/>
+        <polygon points="7,156 23,156 21,130 9,130" fill="url(#pyrLit)"/>
+        <rect x="5" y="150" width="20" height="5" rx="2" fill="#c78b52"/>
+        <polygon points="8,130 22,130 20,114 10,114" fill="url(#templeLit)"/>
+        <rect x="12" y="118" width="6" height="9" rx="2" fill="#f2bd7c"/>
+        <polygon points="12,114 18,114 15,100" fill="#e0a668"/>
+        <rect x="7" y="132" width="5" height="44" fill="#411f13" opacity="0.35"/>
+        <line x1="23" y1="130" x2="24" y2="176" stroke="#ffd9a0" stroke-width="1.2" opacity="0.6"/>
+      </g>
+
+      <!-- 스핑크스 (언덕 앞) -->
+      <g transform="translate(95,36) scale(0.85)">
+        <ellipse cx="630" cy="190" rx="88" ry="7" fill="#2e150c" opacity="0.4"/>
+        <!-- 뒷몸통 -->
+        <path d="M552,188 L552,168 Q552,146 576,143 L600,142 L600,188 Z" fill="url(#pyrLit)"/>
+        <!-- 가슴 -->
+        <path d="M596,188 L596,142 L648,140 L652,188 Z" fill="url(#pyrLit)"/>
+        <!-- 앞발 -->
+        <rect x="648" y="176" width="64" height="12" rx="5" fill="url(#pyrLit)"/>
+        <rect x="644" y="166" width="54" height="10" rx="4" fill="#c78b52"/>
+        <!-- 꼬리 -->
+        <path d="M552,170 Q540,166 544,154" stroke="#a35d33" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <!-- 네메스 두건 -->
+        <polygon points="638,148 686,148 676,96 648,96" fill="url(#templeLit)"/>
+        <!-- 얼굴 -->
+        <rect x="654" y="102" width="14" height="22" rx="5" fill="#f2bd7c"/>
+        <!-- 두건 윗단과 우라에우스 -->
+        <rect x="648" y="90" width="26" height="8" rx="3" fill="#e0a668"/>
+        <rect x="659" y="85" width="4" height="7" rx="2" fill="#ffd700"/>
+        <!-- 수염 -->
+        <rect x="659" y="124" width="5" height="12" rx="2" fill="#c78b52"/>
+        <!-- 두건 줄무늬 -->
+        <g stroke="#8a4b2f" stroke-width="1.5" opacity="0.35">
+          <line x1="647" y1="104" x2="650" y2="134"/>
+          <line x1="677" y1="104" x2="674" y2="134"/>
+        </g>
+        <!-- 그늘과 림라이트 -->
+        <path d="M552,188 L552,168 Q552,150 570,145 L570,188 Z" fill="#411f13" opacity="0.4"/>
+        <path d="M576,143 L648,140" stroke="#ffd9a0" stroke-width="1.6" opacity="0.6" fill="none"/>
+      </g>
+
+      <!-- 앞쪽 모래 언덕 -->
+      <path d="M0,208 Q320,192 640,206 T1200,202 L1200,230 L0,230 Z" fill="url(#duneNear)"/>
+    </svg>
+  </div>
+  <div class="scroll-hint">▼ 아래로 스크롤</div>
+</header>
+
+<!-- ===== 작품 섹션 ===== -->
+<section id="works">
+  <p class="eyebrow reveal">WORKS</p>
+  <h2 class="section-title reveal">작품</h2>
+  <p class="section-sub reveal">사막의 노을처럼 따뜻한 XR 작품들을 소개합니다.</p>
+  <div class="works">
+
+    <div class="card reveal">
+      <div class="card-img"><img src="스크린샷 2026-07-09 160120.png" alt="투탕카멘의 황금 가면" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
+      <div class="card-body">
+        <h3>작품 1 · 투탕카멘의 황금 가면</h3>
+        <p>소년 파라오 투탕카멘의 황금 가면을 3D로 재현한 작품입니다.<br>
+        금빛 줄무늬와 세밀한 질감까지 살려 표현했습니다.</p>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-img"><img src="스크린샷 2026-07-09 160022.png" alt="고대 이집트 석관" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
+      <div class="card-body">
+        <h3>작품 2 · 고대 이집트 석관</h3>
+        <p>화려한 채색 문양이 새겨진 이집트 석관 한 쌍을 모델링했습니다.<br>
+        앞면과 옆면의 상형문자 장식을 꼼꼼히 담았습니다.</p>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-img"><img src="스크린샷 2026-07-09 160228.png" alt="스핑크스" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
+      <div class="card-body">
+        <h3>작품 3 · 사막의 수호자 스핑크스</h3>
+        <p>피라미드를 지키는 스핑크스를 3D로 제작한 작품입니다.<br>
+        오랜 세월 풍화된 돌의 질감을 살리는 데 집중했습니다.</p>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-img"><img src="스크린샷 2026-07-09 160247.png" alt="사막의 피라미드" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
+      <div class="card-body">
+        <h3>작품 4 · 사막의 피라미드</h3>
+        <p>층층이 쌓인 돌계단과 빛나는 정상부가 돋보이는 피라미드입니다.<br>
+        VR 전시 공간의 중심 랜드마크로 배치했습니다.</p>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-img"><img src="스크린샷 2026-07-09 160043.png" alt="아부심벨 대신전" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
+      <div class="card-body">
+        <h3>작품 5 · 아부심벨 대신전</h3>
+        <p>람세스 2세의 거상이 늘어선 아부심벨 신전을 재현했습니다.<br>
+        노을빛을 받은 웅장한 입구의 분위기를 담았습니다.</p>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-img" style="display:flex;gap:2px;">
+        <img src="완성3D.png" alt="완성 3D" style="width:50%;height:100%;object-fit:cover;" loading="lazy">
+        <img src="전체공간.png" alt="전체 공간" style="width:50%;height:100%;object-fit:cover;" loading="lazy">
+      </div>
+      <div class="card-body">
+        <h3>작품 6 · 완성 3D</h3>
+        <p>지금까지의 작품들을 한 공간에 모아 완성한 3D 전시 장면입니다.<br>
+        신전 입구와 전시 전체 공간을 함께 담은 최종 결과물입니다.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== 테마곡 섹션 ===== -->
+<section id="song">
+  <p class="eyebrow reveal">THEME SONG</p>
+  <h2 class="section-title reveal">작품 7 · 나의 테마곡</h2>
+  <p class="section-sub reveal">이 포트폴리오와 어울리는 곡 한 편을 제작하여 담았습니다.</p>
+  <div class="theme-song reveal">
+    <div class="note">♪</div>
+    <h3>「Liber Mortuorum」</h3>
+    <p>잔잔하고 평화로운 분위기의 테마곡입니다.<br>
+    고대 이집트 '사자의 서(Liber Mortuorum)'를 주제로 한 <strong>라틴어 가사</strong>의 곡으로, 페이지를 열면 배경음악처럼 자동 재생됩니다.</p>
+    <audio id="themeAudio" src="Liber Mortuorum.mp3" autoplay loop></audio>
+    <button class="btn btn-gold" id="playBtn" onclick="toggleSong()">듣기</button>
+
+    <details class="lyrics">
+      <summary>가사 보기 (라틴어 원문 · 한국어 번역)</summary>
+      <div class="lyrics-grid">
+<pre>[Intro - Chant, echoing]
+Liber Mortuorum... Liber Mortuorum...
+
+[Verse 1]
+Per umbras eo, per silentium
+Ad iudicium animae meae
+Cor meum mecum, testis fidelis
+Non peccavi, non mentitus sum
+
+[Pre-Chorus]
+Aperite portas, o dei magni
+Ducite me ad lucem aeternam
+
+[Chorus]
+Osiris iudex, Anubis dux
+Thoth scriba veritatis
+Pluma Maat, cor meum pende
+Ad vitam aeternam me duc
+
+[Verse 2]
+Per deserta temporis ambulo
+Nominis mei non obliviscar
+Voces antiquae mecum cantant
+Spiritus meus numquam moritur
+
+[Bridge - Incantation]
+Ankh udja seneb... Ankh udja seneb...
+Aperi viam, aperi viam
+
+[Chorus]
+Osiris iudex, Anubis dux
+Thoth scriba veritatis
+Pluma Maat, cor meum pende
+Ad vitam aeternam me duc
+
+[Outro]
+Liber Mortuorum...
+Vox aeterna in tenebris
+Lux aeterna in corde meo</pre>
+<pre>[인트로 - 챈트, 울림있게]
+사자의 서... 사자의 서...
+
+[1절]
+그림자 속을 걸어가네, 침묵 속으로
+내 영혼의 심판을 향해
+내 심장은 나와 함께, 진실한 증인
+나는 죄짓지 않았고, 거짓말하지 않았네
+
+[프리코러스]
+문을 열어라, 위대한 신들이여
+영원한 빛으로 나를 인도하라
+
+[후렴]
+심판자 오시리스, 안내자 아누비스
+진실을 기록하는 토트
+마아트의 깃털이여, 내 심장을 달아라
+영원한 생명으로 나를 이끌라
+
+[2절]
+시간의 사막을 걸어가네
+내 이름을 잊지 않으리
+고대의 목소리가 나와 함께 노래하네
+내 영혼은 결코 죽지 않으리
+
+[브리지 - 주문, 속삭이듯]
+안크 우자 세네브... 안크 우자 세네브...
+길을 열어라, 길을 열어라
+
+[후렴]
+심판자 오시리스, 안내자 아누비스
+진실을 기록하는 토트
+마아트의 깃털이여, 내 심장을 달아라
+영원한 생명으로 나를 이끌라
+
+[아웃트로]
+사자의 서...
+어둠 속의 영원한 목소리
+내 마음 속의 영원한 빛</pre>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ===== VR 전시 섹션 ===== -->
+<section class="vr-section" id="vr">
+  <p class="eyebrow reveal">VR EXHIBITION</p>
+  <h2 class="section-title reveal">VR 전시</h2>
+  <p class="section-sub reveal">버튼을 누르면 VR 전시 동영상이 화면에 나타납니다.</p>
+  <button class="btn btn-vr reveal" onclick="openModal()">VR 전시 보러가기</button>
+</section>
+
+<!-- VR 동영상 모달 -->
+<div class="modal" id="vrModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <div class="modal-head">
+      <strong>VR 전시 영상</strong>
+      <button class="modal-close" onclick="closeModal()" aria-label="영상 닫기">×</button>
+    </div>
+    <div class="video-wrap">
+      <video id="vrVideo" src="VR전시_web.mp4" controls style="position:absolute;inset:0;width:100%;height:100%;"></video>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div style="font-family:'Cinzel',serif;letter-spacing:.35em;font-size:.78rem;opacity:.75;margin-bottom:10px;">LEE JEONG GEUN — FIRST XR PORTFOLIO</div>
+  © 2026 이정근 · 첫 XR 포트폴리오
+</footer>
+
+<script>
+  const bgm = document.getElementById('themeAudio');
+  const playBtn = document.getElementById('playBtn');
+  let userPaused = false;
+
+  function setBtn(){ playBtn.textContent = bgm.paused ? '듣기' : '⏸ 정지'; }
+
+  // 페이지 열자마자 배경음악 자동 재생 시도
+  bgm.play().then(setBtn).catch(()=>{});
+  // 브라우저가 자동재생을 막은 경우: 첫 클릭/키/터치 때 재생 시작
+  function unlockAudio(){
+    if(bgm.paused && !userPaused && !document.getElementById('vrModal').classList.contains('open')){
+      bgm.play().then(setBtn).catch(()=>{});
+    }
+  }
+  ['click','keydown','touchstart'].forEach(ev=>document.addEventListener(ev, unlockAudio, {once:true}));
+
+  function toggleSong(){
+    if(bgm.paused){ userPaused=false; bgm.play().then(setBtn).catch(()=>{}); }
+    else{ userPaused=true; bgm.pause(); setBtn(); }
+  }
+
+  // VR 영상 재생 중에는 배경음악을 잠시 멈췄다가, 닫으면 다시 이어서 재생
+  let bgmWasPlaying = false;
+  function openModal(){
+    bgmWasPlaying = !bgm.paused;
+    bgm.pause(); setBtn();
+    document.getElementById('vrModal').classList.add('open');
+    document.getElementById('vrVideo').play().catch(()=>{});
+  }
+  function closeModal(){
+    document.getElementById('vrModal').classList.remove('open');
+    document.getElementById('vrVideo').pause();
+    if(bgmWasPlaying){ bgm.play().then(setBtn).catch(()=>{}); }
+  }
+  document.addEventListener('keydown', e=>{if(e.key==='Escape')closeModal();});
+
+  // 스크롤 등장 애니메이션
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, {threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>
