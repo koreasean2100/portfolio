@@ -24,6 +24,7 @@
     font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
     color:var(--dusk-deep);
     background:linear-gradient(#f7e3bd, #f3d3a0);
+    overflow-x:hidden;
   }
 
   /* ===== 첫 화면 (히어로) ===== */
@@ -179,17 +180,23 @@
   }
   .section-sub{text-align:center;color:var(--dusk-deep);opacity:.85;margin-bottom:48px;font-size:1rem;}
 
-  /* ===== 작품 섹션 배경 콜라주 ===== */
-  #works{position:relative;overflow:hidden;}
-  .works-bg{position:absolute;inset:0;pointer-events:none;z-index:0;}
+  /* ===== 작품 섹션 배경 ===== */
+  #works{position:relative;}
+  .works-bg{
+    position:absolute;top:0;bottom:0;left:50%;
+    transform:translateX(-50%);
+    width:100vw;
+    pointer-events:none;z-index:0;
+  }
   .works-bg img{
-    position:absolute;
-    opacity:.09;
-    filter:sepia(.5) saturate(.85);
-    border-radius:14px;
-    box-shadow:0 10px 30px rgba(91,46,34,.25);
+    width:100%;height:100%;
+    object-fit:cover;
+    opacity:.14;
+    filter:sepia(.35) saturate(.9);
   }
   #works > *:not(.works-bg){position:relative;z-index:1;}
+  .card-wide{margin-top:28px;}
+  .card-wide .card-img{height:340px;}
 
   /* ===== 작품 카드 ===== */
   .works{
@@ -326,7 +333,7 @@
   }
   .modal.open{display:flex;}
   .modal-box{
-    width:min(880px, 100%);
+    width:min(1200px, 96vw);
     background:var(--dusk-deep);
     border-radius:16px;
     overflow:hidden;
@@ -587,10 +594,7 @@
 <!-- ===== 작품 섹션 ===== -->
 <section id="works">
   <div class="works-bg" aria-hidden="true">
-    <img src="완성3D.png" alt="" loading="lazy" style="top:30px;left:-70px;width:380px;transform:rotate(-9deg);">
-    <img src="전체공간.png" alt="" loading="lazy" style="top:36%;right:-80px;width:400px;transform:rotate(7deg);">
-    <img src="스크린샷 2026-07-09 160120.png" alt="" loading="lazy" style="bottom:6%;left:-50px;width:300px;transform:rotate(5deg);">
-    <img src="스크린샷 2026-07-09 160247.png" alt="" loading="lazy" style="bottom:-40px;right:14%;width:300px;transform:rotate(-6deg);">
+    <img src="스크린샷 2026-07-09 155337.png" alt="" loading="lazy">
   </div>
   <p class="eyebrow reveal">WORKS</p>
   <h2 class="section-title reveal">작품</h2>
@@ -642,18 +646,19 @@
       </div>
     </div>
 
-    <div class="card reveal">
-      <div class="card-img" style="display:flex;gap:2px;">
-        <img src="완성3D.png" alt="완성 3D" style="width:50%;height:100%;object-fit:contain;" loading="lazy">
-        <img src="전체공간.png" alt="전체 공간" style="width:50%;height:100%;object-fit:contain;" loading="lazy">
-      </div>
-      <div class="card-body">
-        <h3>작품 6 · 완성 3D</h3>
-        <p>지금까지의 작품들을 한 공간에 모아 완성한 3D 전시 장면입니다.<br>
-        신전 입구와 전시 전체 공간을 함께 담은 최종 결과물입니다.</p>
-      </div>
-    </div>
+  </div>
 
+  <!-- 작품 6: 단독 와이드 배치 -->
+  <div class="card reveal card-wide">
+    <div class="card-img" style="display:flex;gap:2px;">
+      <img src="완성3D.png" alt="완성 3D" style="width:50%;height:100%;object-fit:contain;" loading="lazy">
+      <img src="전체공간.png" alt="전체 공간" style="width:50%;height:100%;object-fit:contain;" loading="lazy">
+    </div>
+    <div class="card-body">
+      <h3>작품 6 · 완성 3D</h3>
+      <p>지금까지의 작품들을 한 공간에 모아 완성한 3D 전시 장면입니다.<br>
+      신전 입구와 전시 전체 공간을 함께 담은 최종 결과물입니다.</p>
+    </div>
   </div>
 </section>
 
@@ -760,15 +765,15 @@ Lux aeterna in corde meo</pre>
 <section class="vr-section" id="vr">
   <p class="eyebrow reveal">VR EXHIBITION</p>
   <h2 class="section-title reveal">VR 전시</h2>
-  <p class="section-sub reveal">버튼을 누르면 VR 전시 동영상이 화면에 나타납니다.</p>
-  <button class="btn btn-vr reveal" onclick="openModal()">VR 전시 보러가기</button>
+  <p class="section-sub reveal">버튼을 누르면 VR 이집트 여행 영상이 크게 재생됩니다.</p>
+  <button class="btn btn-vr reveal" onclick="openModal()">VR 이집트 여행</button>
 </section>
 
 <!-- VR 동영상 모달 -->
 <div class="modal" id="vrModal" onclick="if(event.target===this)closeModal()">
   <div class="modal-box">
     <div class="modal-head">
-      <strong>VR 전시 영상</strong>
+      <strong>VR 이집트 여행</strong>
       <button class="modal-close" onclick="closeModal()" aria-label="영상 닫기">×</button>
     </div>
     <div class="video-wrap">
