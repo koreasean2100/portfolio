@@ -25,6 +25,8 @@
     --sky-low:#d96f3f;
     --cream:#fff6e8;
     --gold:#f5c66d;
+    --nile:#2f9ca6;      /* 터콰이즈: 투탕카멘 마스크의 금+청 조합에서 온 포인트 컬러 */
+    --nile-deep:#1f7a83;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -202,7 +204,7 @@
     width:70px;height:4px;
     margin:14px auto 0;
     border-radius:2px;
-    background:linear-gradient(90deg, var(--gold), var(--sky-low));
+    background:linear-gradient(90deg, var(--gold) 0%, var(--sky-low) 60%, var(--nile) 100%);
   }
   .section-sub{text-align:center;color:var(--dusk-deep);opacity:.85;margin-bottom:48px;font-size:1rem;}
 
@@ -347,7 +349,18 @@
     border:1px solid rgba(245,198,109,.28);
     box-shadow:inset 0 1px 0 rgba(255,246,232,.14), 0 14px 34px rgba(91,46,34,.35);
   }
-  .theme-song .note{font-size:2.2rem;margin-bottom:10px;}
+  .theme-song .note{font-size:2.2rem;margin-bottom:6px;color:var(--nile);text-shadow:0 0 18px rgba(47,156,166,.5);}
+  /* 재생 중 느낌을 주는 음파 이퀄라이저 */
+  .wave{display:flex;justify-content:center;align-items:flex-end;gap:5px;height:32px;margin:0 0 14px;}
+  .wave span{width:5px;height:10px;border-radius:3px;background:linear-gradient(var(--gold), var(--nile));opacity:.55;transition:opacity .3s ease;}
+  .theme-song.playing .wave span{opacity:.95;animation:eq 1s ease-in-out infinite;}
+  .wave span:nth-child(2){animation-delay:.12s}
+  .wave span:nth-child(3){animation-delay:.24s}
+  .wave span:nth-child(4){animation-delay:.36s}
+  .wave span:nth-child(5){animation-delay:.18s}
+  .wave span:nth-child(6){animation-delay:.30s}
+  .wave span:nth-child(7){animation-delay:.06s}
+  @keyframes eq{0%,100%{height:9px}50%{height:28px}}
   .theme-song h3{font-family:'Cinzel','Noto Serif KR',serif;letter-spacing:.1em;font-size:1.5rem;margin-bottom:8px;}
   .theme-song p{opacity:.85;margin-bottom:26px;line-height:1.8;}
   .lyrics{
@@ -393,8 +406,21 @@
     text-decoration:none;
     cursor:pointer;
     border:none;
+    position:relative;
+    overflow:hidden;
     transition:transform .2s ease, box-shadow .2s ease;
   }
+  /* hover 시 지나가는 금빛 광택 */
+  .btn::before{
+    content:"";position:absolute;top:0;left:-130%;
+    width:55%;height:100%;
+    background:linear-gradient(100deg, transparent, rgba(255,255,255,.55), transparent);
+    transform:skewX(-18deg);
+    transition:left .6s ease;
+    pointer-events:none;
+  }
+  .btn:hover::before{left:140%;}
+  .btn > *{position:relative;z-index:1;}
   .btn:hover{transform:scale(1.05);}
   .btn:active{transform:scale(.97);}
   a:focus-visible, button:focus-visible, summary:focus-visible{
@@ -409,6 +435,9 @@
     .card, .card-img img, .btn{transition:none;}
     .card:hover{transform:none;}
     .card:hover .card-img img{transform:none;}
+    .wave span{animation:none!important;}
+    .btn::before{display:none;}
+    .vr-preview img{transition:none;}
   }
   .btn-gold{
     background:linear-gradient(90deg, var(--gold), var(--sand-deep));
@@ -418,6 +447,31 @@
 
   /* ===== VR 전시 ===== */
   .vr-section{text-align:center;}
+  /* VR 영상 미리보기 썸네일 */
+  .vr-preview{
+    position:relative;max-width:760px;margin:0 auto 30px;
+    border-radius:18px;overflow:hidden;
+    border:1px solid rgba(245,198,109,.35);
+    box-shadow:0 16px 44px rgba(91,46,34,.4);
+  }
+  .vr-preview img{width:100%;height:auto;display:block;filter:sepia(.15) saturate(.95) brightness(.9);transition:transform .5s ease, filter .5s ease;}
+  .vr-preview:hover img{transform:scale(1.04);filter:sepia(.02) saturate(1) brightness(1);}
+  .vr-preview::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at center, rgba(43,20,14,0) 35%, rgba(43,20,14,.5) 100%);}
+  .vr-play{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;
+    width:84px;height:84px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.9rem;color:var(--dusk-deep);padding-left:6px;
+    background:radial-gradient(circle, #ffe9b8, var(--gold));
+    box-shadow:0 0 0 10px rgba(255,246,232,.18), 0 8px 24px rgba(43,20,14,.55);
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .vr-preview:hover .vr-play{transform:translate(-50%,-50%) scale(1.08);box-shadow:0 0 0 14px rgba(47,156,166,.28), 0 10px 28px rgba(43,20,14,.65);}
+  .vr-preview-label{
+    position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:2;
+    font-family:'Cinzel',serif;letter-spacing:.2em;font-size:.72rem;
+    color:var(--cream);text-shadow:0 2px 6px rgba(43,20,14,.75);
+  }
   .btn-vr{
     background:linear-gradient(90deg, var(--sky-low), var(--dusk));
     color:var(--cream);
@@ -503,12 +557,8 @@
     <p class="hero-eyebrow">XR PORTFOLIO — 2026</p>
     <h1>사막 위에 지은 디지털 신전<span class="hero-sub">AI와 함께 만든 첫 XR 이집트 전시관</span></h1>
     <div class="intro">
-      안녕하세요, 가상과 현실의 경계를 탐험하는 XR 크리에이터 이정근입니다.<br>
-      VR·AR 기술로 상상 속 공간을 직접 걸어볼 수 있는 경험으로 만듭니다.<br>
-      이곳은 제 첫 여정을 담은 작은 사막의 전시관입니다.
-      <div class="intro-en">Hello, I'm Jeongkun Lee, an XR creator exploring the boundary between the virtual and the real.<br>
-      With VR and AR, I turn imagined spaces into experiences you can walk through.<br>
-      This is a small desert gallery that holds my first journey.</div>
+      안녕하세요, 가상과 현실의 경계를 탐험하는 XR 크리에이터 이정근입니다.      VR·AR 기술로 상상 속 공간을 직접 걸어볼 수 있는 경험으로 만듭니다.      이곳은 제 첫 여정을 담은 작은 사막의 전시관입니다.
+      <div class="intro-en">Hello, I'm Jeongkun Lee, an XR creator exploring the boundary between the virtual and the real.      With VR and AR, I turn imagined spaces into experiences you can walk through.      This is a small desert gallery that holds my first journey.</div>
     </div>
   </div>
   <!-- 사막 풍경: 입체감 있는 피라미드 + 신전 -->
@@ -721,8 +771,7 @@
       <div class="card-img"><img src="스크린샷 2026-07-09 160120.png" alt="투탕카멘의 황금 가면" style="width:100%;height:100%;object-fit:contain;" loading="lazy"></div>
       <div class="card-body">
         <h3>작품 1 · 투탕카멘의 황금 가면<span class="title-en">Golden Mask of Tutankhamun</span></h3>
-        <p>소년 파라오 투탕카멘의 황금 가면을 3D로 재현한 작품입니다.<br>
-        금빛 줄무늬와 세밀한 질감까지 살려 표현했습니다.<span class="en">A 3D recreation of the boy pharaoh's golden mask, capturing its gilded stripes and fine texture.</span></p>
+        <p>소년 파라오 투탕카멘의 황금 가면을 3D로 재현한 작품입니다.        금빛 줄무늬와 세밀한 질감까지 살려 표현했습니다.<span class="en">A 3D recreation of the boy pharaoh's golden mask, capturing its gilded stripes and fine texture.</span></p>
       </div>
     </div>
 
@@ -730,8 +779,7 @@
       <div class="card-img"><img src="스크린샷 2026-07-09 160022.png" alt="고대 이집트 석관" style="width:100%;height:100%;object-fit:contain;" loading="lazy"></div>
       <div class="card-body">
         <h3>작품 2 · 고대 이집트 석관<span class="title-en">Ancient Egyptian Sarcophagi</span></h3>
-        <p>화려한 채색 문양이 새겨진 이집트 석관 한 쌍을 모델링했습니다.<br>
-        앞면과 옆면의 상형문자 장식을 꼼꼼히 담았습니다.<span class="en">A pair of richly painted sarcophagi, modeled with hieroglyphic details on every side.</span></p>
+        <p>화려한 채색 문양이 새겨진 이집트 석관 한 쌍을 모델링했습니다.        앞면과 옆면의 상형문자 장식을 꼼꼼히 담았습니다.<span class="en">A pair of richly painted sarcophagi, modeled with hieroglyphic details on every side.</span></p>
       </div>
     </div>
 
@@ -739,8 +787,7 @@
       <div class="card-img"><img src="스크린샷 2026-07-09 160228.png" alt="스핑크스" style="width:100%;height:100%;object-fit:contain;" loading="lazy"></div>
       <div class="card-body">
         <h3>작품 3 · 사막의 수호자 스핑크스<span class="title-en">Sphinx, Guardian of the Desert</span></h3>
-        <p>피라미드를 지키는 스핑크스를 3D로 제작한 작품입니다.<br>
-        오랜 세월 풍화된 돌의 질감을 살리는 데 집중했습니다.<span class="en">The Sphinx guarding the pyramids, focused on the feel of stone weathered by time.</span></p>
+        <p>피라미드를 지키는 스핑크스를 3D로 제작한 작품입니다.        오랜 세월 풍화된 돌의 질감을 살리는 데 집중했습니다.<span class="en">The Sphinx guarding the pyramids, focused on the feel of stone weathered by time.</span></p>
       </div>
     </div>
 
@@ -748,8 +795,7 @@
       <div class="card-img"><img src="스크린샷 2026-07-09 160247.png" alt="사막의 피라미드" style="width:100%;height:100%;object-fit:contain;" loading="lazy"></div>
       <div class="card-body">
         <h3>작품 4 · 사막의 피라미드<span class="title-en">Desert Pyramid</span></h3>
-        <p>층층이 쌓인 돌계단과 빛나는 정상부가 돋보이는 피라미드입니다.<br>
-        VR 전시 공간의 중심 랜드마크로 배치했습니다.<span class="en">A pyramid of layered stone steps and a shining capstone — the landmark at the heart of the VR exhibition.</span></p>
+        <p>층층이 쌓인 돌계단과 빛나는 정상부가 돋보이는 피라미드입니다.        VR 전시 공간의 중심 랜드마크로 배치했습니다.<span class="en">A pyramid of layered stone steps and a shining capstone — the landmark at the heart of the VR exhibition.</span></p>
       </div>
     </div>
 
@@ -757,8 +803,7 @@
       <div class="card-img"><img src="스크린샷 2026-07-09 160043.png" alt="아부심벨 대신전" style="width:100%;height:100%;object-fit:contain;" loading="lazy"></div>
       <div class="card-body">
         <h3>작품 5 · 아부심벨 대신전<span class="title-en">Great Temple of Abu Simbel</span></h3>
-        <p>람세스 2세의 거상이 늘어선 아부심벨 신전을 재현했습니다.<br>
-        노을빛을 받은 웅장한 입구의 분위기를 담았습니다.<span class="en">The temple of Ramesses II with its colossal statues, bathed in sunset light.</span></p>
+        <p>람세스 2세의 거상이 늘어선 아부심벨 신전을 재현했습니다.        노을빛을 받은 웅장한 입구의 분위기를 담았습니다.<span class="en">The temple of Ramesses II with its colossal statues, bathed in sunset light.</span></p>
       </div>
     </div>
 
@@ -766,8 +811,7 @@
       <div class="card-img"><img src="스크린샷 2026-07-09 160211.png" alt="파라오의 거상" style="width:100%;height:100%;object-fit:contain;" loading="lazy"></div>
       <div class="card-body">
         <h3>작품 6 · 파라오의 거상<span class="title-en">Colossi of the Pharaoh</span></h3>
-        <p>왕좌에 앉은 파라오의 거상 한 쌍을 3D로 제작한 작품입니다.<br>
-        세월에 마모된 사암의 질감과 웅장한 스케일을 담았습니다.<span class="en">A pair of colossal seated pharaohs, capturing weathered sandstone and monumental scale.</span></p>
+        <p>왕좌에 앉은 파라오의 거상 한 쌍을 3D로 제작한 작품입니다.        세월에 마모된 사암의 질감과 웅장한 스케일을 담았습니다.<span class="en">A pair of colossal seated pharaohs, capturing weathered sandstone and monumental scale.</span></p>
       </div>
     </div>
 
@@ -781,8 +825,7 @@
     </div>
     <div class="card-body">
       <h3>작품 7 · 완성 3D<span class="title-en">Final 3D Exhibition</span></h3>
-      <p>지금까지의 작품들을 한 공간에 모아 완성한 3D 전시 장면입니다.<br>
-      신전 입구와 전시 전체 공간을 함께 담은 최종 결과물입니다.<span class="en">The completed exhibition scene that gathers every work — the temple entrance and the full space in one view.</span></p>
+      <p>지금까지의 작품들을 한 공간에 모아 완성한 3D 전시 장면입니다.      신전 입구와 전시 전체 공간을 함께 담은 최종 결과물입니다.<span class="en">The completed exhibition scene that gathers every work — the temple entrance and the full space in one view.</span></p>
     </div>
   </div>
 </section>
@@ -839,8 +882,13 @@
 <section class="vr-section" id="vr">
   <p class="eyebrow reveal">VR EXHIBITION</p>
   <h2 class="section-title reveal">VR 전시</h2>
-  <p class="section-sub reveal">버튼을 누르면 VR 이집트 여행 영상이 크게 재생됩니다.<span class="sub-en">Press the button to watch the VR Egypt tour in a large viewer.</span></p>
-  <button class="btn btn-vr reveal" onclick="openModal()">VR 이집트 여행 · VR Egypt Tour</button>
+  <p class="section-sub reveal">썸네일이나 버튼을 누르면 VR 이집트 여행 영상이 크게 재생됩니다.<span class="sub-en">Tap the preview or the button to watch the VR Egypt tour in a large viewer.</span></p>
+  <div class="vr-preview reveal" onclick="openModal()" role="button" tabindex="0" aria-label="VR 이집트 여행 영상 재생">
+    <img src="전체공간.png" alt="VR 이집트 전시 공간 미리보기" loading="lazy">
+    <span class="vr-play" aria-hidden="true">▶</span>
+    <span class="vr-preview-label">미리보기 · Preview</span>
+  </div>
+  <button class="btn btn-vr reveal" onclick="openModal()"><span>VR 이집트 여행 · VR Egypt Tour</span></button>
 </section>
 
 <section id="song">
@@ -849,9 +897,9 @@
   <p class="section-sub reveal">이 포트폴리오와 어울리는 곡 한 편을 제작하여 담았습니다.<span class="sub-en">A song composed to accompany this portfolio.</span></p>
   <div class="theme-song reveal">
     <div class="note">♪</div>
+    <div class="wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
     <h3>「Liber Mortuorum」</h3>
-    <p>잔잔하고 평화로운 분위기의 테마곡입니다.<br>
-    고대 이집트 '사자의 서(Liber Mortuorum)'를 주제로 한 <strong>라틴어 가사</strong>의 곡으로, 페이지를 열면 배경음악처럼 자동 재생됩니다.<span class="en">A calm, peaceful theme with Latin lyrics inspired by the Egyptian Book of the Dead — it plays automatically as background music.</span></p>
+    <p>잔잔하고 평화로운 분위기의 테마곡입니다.    고대 이집트 '사자의 서(Liber Mortuorum)'를 주제로 한 <strong>라틴어 가사</strong>의 곡으로, 페이지를 열면 배경음악처럼 자동 재생됩니다.<span class="en">A calm, peaceful theme with Latin lyrics inspired by the Egyptian Book of the Dead — it plays automatically as background music.</span></p>
     <audio id="themeAudio" src="Liber Mortuorum.mp3" autoplay loop></audio>
     <button class="btn btn-gold" id="playBtn" onclick="toggleSong()">듣기 · Play</button>
 
@@ -981,7 +1029,19 @@ Lux aeterna in corde meo</pre>
   const playBtn = document.getElementById('playBtn');
   let userPaused = false;
 
-  function setBtn(){ playBtn.textContent = bgm.paused ? '듣기 · Play' : '⏸ 정지 · Pause'; }
+  const themeBox = document.querySelector('.theme-song');
+  function setBtn(){
+    playBtn.textContent = bgm.paused ? '듣기 · Play' : '⏸ 정지 · Pause';
+    if(themeBox) themeBox.classList.toggle('playing', !bgm.paused);
+  }
+
+  // VR 미리보기 썸네일 키보드 접근성 (Enter/Space)
+  const vrPreview = document.querySelector('.vr-preview');
+  if(vrPreview){
+    vrPreview.addEventListener('keydown', e=>{
+      if(e.key==='Enter' || e.key===' '){ e.preventDefault(); openModal(); }
+    });
+  }
 
   // 페이지 열자마자 배경음악 자동 재생 시도
   bgm.play().then(setBtn).catch(()=>{});
