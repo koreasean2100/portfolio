@@ -217,6 +217,19 @@
   .card-wide{margin-top:28px;}
   .card-wide .card-img{height:340px;}
 
+  /* ===== 제작 과정 배경 ===== */
+  #process{position:relative;}
+  .process-bg{
+    position:absolute;top:0;bottom:0;left:50%;
+    transform:translateX(-50%);
+    width:100vw;
+    pointer-events:none;z-index:0;
+    -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
+    mask-image:linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
+  }
+  .process-bg img{width:100%;height:100%;object-fit:cover;opacity:.14;filter:sepia(.35) saturate(.9);}
+  #process > *:not(.process-bg){position:relative;z-index:1;}
+
   /* ===== 테마곡·VR 배경 ===== */
   .songvr-wrap{position:relative;}
   .songvr-bg{
@@ -743,6 +756,9 @@
 
 <!-- ===== 제작 과정 섹션 ===== -->
 <section id="process">
+  <div class="process-bg" aria-hidden="true">
+    <img src="배경.png" alt="" loading="lazy">
+  </div>
   <p class="eyebrow reveal">MAKING PROCESS</p>
   <h2 class="section-title reveal">AI × XR 제작 과정</h2>
   <p class="section-sub reveal">모든 작품은 AI와 협업해 만들고, 가상현실 공간에 전시했습니다.<span class="sub-en">Every piece was co-created with AI and exhibited in virtual reality.</span></p>
