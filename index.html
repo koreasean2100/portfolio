@@ -327,8 +327,22 @@
     font-size:3rem;
     opacity:.18;
   }
-  .card-img img{transition:transform .6s ease;cursor:zoom-in;filter:sepia(.22) saturate(.92) contrast(1.02);}
-  .card:hover .card-img img{transform:scale(1.06);}
+  .card-img > img{transition:transform .6s ease;cursor:zoom-in;filter:sepia(.22) saturate(.92) contrast(1.02);}
+  .card:hover .card-img > img{transform:scale(1.06);}
+  /* 3D 뷰어 카드 */
+  .card-img model-viewer{width:100%;height:100%;background:linear-gradient(160deg,#3a2018,#241310);--poster-color:transparent;}
+  .mv-poster{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+  .mv-poster img{width:100%;height:100%;object-fit:contain;filter:sepia(.22) saturate(.92) contrast(1.02);}
+  .mv-load{
+    position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:3;
+    display:flex;align-items:center;gap:6px;cursor:pointer;border:none;
+    padding:9px 18px;border-radius:999px;
+    font-family:'Noto Sans KR',sans-serif;font-weight:600;font-size:.82rem;
+    color:var(--dusk-deep);
+    background:radial-gradient(circle at 30% 30%, #ffe9b8, var(--gold));
+    box-shadow:0 4px 14px rgba(43,20,14,.5);
+  }
+  .mv-load:hover{transform:translateX(-50%) scale(1.05);}
   /* 모든 작품 이미지를 어두운 진열장 톤으로 통일: 가장자리 비네트로 배경 차이를 감쌈 */
   .card-img::after{
     content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
@@ -768,7 +782,18 @@
   <div class="works">
 
     <div class="card reveal">
-      <div class="card-img"><img src="스크린샷 2026-07-09 160120.png" alt="투탕카멘의 황금 가면" style="width:100%;height:100%;object-fit:contain;" loading="lazy"></div>
+      <div class="card-img card-3d">
+        <model-viewer src="Meshy_AI_Mask_of_Tutankhamun_0709032614_texture.glb"
+          alt="투탕카멘의 황금 가면 3D 모델"
+          reveal="manual" camera-controls auto-rotate rotation-per-second="18deg"
+          interaction-prompt="none" shadow-intensity="1" exposure="1.05"
+          environment-image="neutral" touch-action="pan-y" loading="lazy">
+          <div slot="poster" class="mv-poster">
+            <img src="스크린샷 2026-07-09 160120.png" alt="투탕카멘의 황금 가면">
+            <button class="mv-load" onclick="this.closest('model-viewer').dismissPoster()">✦ 3D로 회전해 보기</button>
+          </div>
+        </model-viewer>
+      </div>
       <div class="card-body">
         <h3>작품 1 · 투탕카멘의 황금 가면<span class="title-en">Golden Mask of Tutankhamun</span></h3>
         <p>소년 파라오 투탕카멘의 황금 가면을 3D로 재현한 작품입니다.        금빛 줄무늬와 세밀한 질감까지 살려 표현했습니다.<span class="en">A 3D recreation of the boy pharaoh's golden mask, capturing its gilded stripes and fine texture.</span></p>
@@ -1075,7 +1100,7 @@ Lux aeterna in corde meo</pre>
 
   // 작품 이미지 클릭 시 크게 보기
   function closeImgModal(){ document.getElementById('imgModal').classList.remove('open'); }
-  document.querySelectorAll('.card-img img').forEach(img=>{
+  document.querySelectorAll('.card-img > img').forEach(img=>{
     img.addEventListener('click', ()=>{
       document.getElementById('imgModalPic').src = img.src;
       document.getElementById('imgModal').classList.add('open');
@@ -1086,6 +1111,7 @@ Lux aeterna in corde meo</pre>
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(!prefersReduced){
     document.querySelectorAll('.card').forEach(card=>{
+      if(card.querySelector('model-viewer')) return; // 3D 뷰어 카드는 틸트 제외 (회전 조작과 충돌 방지)
       card.addEventListener('mousemove', e=>{
         const r=card.getBoundingClientRect();
         const x=(e.clientX-r.left)/r.width-.5;
@@ -1113,6 +1139,9 @@ Lux aeterna in corde meo</pre>
   }, {threshold:0.12});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 </script>
+
+<!-- 3D 모델 뷰어 (Google model-viewer) -->
+<script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.0.0/dist/model-viewer.min.js"></script>
 
 </body>
 </html>
