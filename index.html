@@ -246,8 +246,38 @@
     background:rgba(47,156,166,.09);
     color:var(--dusk-deep);font-size:.92rem;line-height:1.7;
   }
+  /* AR 직접 체험 블록 */
+  .ar-try{
+    margin-top:34px;
+    background:linear-gradient(120deg, var(--dusk) 0%, var(--dusk-deep) 100%);
+    border:1px solid rgba(245,198,109,.28);
+    border-radius:20px;padding:30px 28px;
+    box-shadow:inset 0 1px 0 rgba(255,246,232,.12), 0 14px 34px rgba(91,46,34,.32);
+  }
+  .ar-try-head{
+    text-align:center;color:var(--gold);
+    font-family:'Pretendard Variable','Pretendard','Noto Sans KR',sans-serif;
+    font-weight:700;font-size:1.1rem;letter-spacing:.02em;margin-bottom:26px;
+  }
+  .ar-try-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .ar-try-step{text-align:center;color:var(--cream);display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .ar-try-step p{font-size:.92rem;line-height:1.6;opacity:.92;}
+  .ar-try-step p strong{color:var(--gold);}
+  .ar-qr, .ar-marker{
+    width:150px;height:150px;border-radius:12px;background:#fff;padding:8px;
+    box-shadow:0 6px 16px rgba(0,0,0,.35);
+  }
+  .ar-marker{object-fit:contain;}
+  .ar-try-btn{margin-top:2px;font-size:.92rem;padding:11px 26px;}
+  .ar-marker-link{color:var(--gold);font-size:.85rem;text-decoration:underline;text-underline-offset:3px;}
+  .ar-result{
+    width:150px;height:150px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;font-size:3rem;color:var(--nile);
+    background:rgba(47,156,166,.12);border:1px dashed rgba(47,156,166,.5);
+  }
   @media (max-width:760px){
     .ar-wrap{grid-template-columns:1fr;gap:24px;}
+    .ar-try-grid{grid-template-columns:1fr;gap:26px;}
   }
 
   /* ===== 입장(오프닝 영상) 섹션 ===== */
@@ -1064,6 +1094,27 @@
         <li><span class="ar-num">3</span>마커 위에 <strong>투탕카멘 황금 가면</strong>이 3D로 팝업되어, 돌려보고 다가가며 관람할 수 있습니다.</li>
       </ol>
       <p class="ar-note">VR(가상 전시) · AR(증강 현실) · 3D 웹 뷰어까지 — 하나의 유물을 세 가지 XR 방식으로 감상할 수 있는 전시입니다.<span class="en">Virtual reality, augmented reality, and a 3D web viewer — one artifact, three ways to experience it.</span></p>
+    </div>
+  </div>
+
+  <!-- 직접 체험 블록 -->
+  <div class="ar-try reveal">
+    <p class="ar-try-head">📱 직접 체험해 보세요 · Try it yourself</p>
+    <div class="ar-try-grid">
+      <div class="ar-try-step">
+        <img class="ar-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=10&data=https%3A%2F%2Fstupendous-phoenix-9fcd0e.netlify.app%2F" alt="AR 체험 QR 코드" loading="lazy" width="150" height="150">
+        <p><strong>①</strong> 폰 카메라로 QR을 스캔해 AR 앱을 엽니다.</p>
+        <a class="btn btn-gold ar-try-btn" href="https://stupendous-phoenix-9fcd0e.netlify.app/" target="_blank" rel="noopener"><span>폰으로 열기 · Open AR</span></a>
+      </div>
+      <div class="ar-try-step">
+        <img class="ar-marker" src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@master/data/images/hiro.png" alt="HIRO 마커" loading="lazy" width="150" height="150">
+        <p><strong>②</strong> 앱이 열리면 폰 카메라로 이 <strong>HIRO 마커</strong>를 비춥니다.</p>
+        <a class="ar-marker-link" href="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@master/data/images/hiro.png" target="_blank" rel="noopener">마커 크게 보기 · 인쇄</a>
+      </div>
+      <div class="ar-try-step">
+        <div class="ar-result">✦</div>
+        <p><strong>③</strong> 마커 위에 <strong>투탕카멘 마스크</strong>가 3D로 나타납니다.</p>
+      </div>
     </div>
   </div>
 </section>
