@@ -250,12 +250,14 @@
     font-family:'Cinzel','Noto Sans KR',serif;font-size:.8rem;letter-spacing:.06em;
     color:var(--cream);background:rgba(43,20,14,.55);
   }
-  .ar-lead{color:var(--dusk-deep);line-height:1.85;font-size:1.02rem;margin-bottom:22px;}
+  .ar-lead{color:var(--dusk-deep);line-height:1.85;font-size:1.02rem;margin-bottom:22px;word-break:keep-all;}
   .ar-steps{list-style:none;margin:0 0 22px;padding:0;display:flex;flex-direction:column;gap:14px;}
   .ar-steps li{
     display:flex;align-items:flex-start;gap:14px;
     color:var(--dusk-deep);line-height:1.7;font-size:.98rem;
+    word-break:keep-all;
   }
+  .ar-steps li strong{white-space:nowrap;}
   .ar-num{
     flex:0 0 auto;width:30px;height:30px;border-radius:50%;
     display:flex;align-items:center;justify-content:center;
@@ -284,7 +286,7 @@
   }
   .ar-try-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
   .ar-try-step{text-align:center;color:var(--cream);display:flex;flex-direction:column;align-items:center;gap:12px;}
-  .ar-try-step p{font-size:.92rem;line-height:1.6;opacity:.92;}
+  .ar-try-step p{font-size:.92rem;line-height:1.6;opacity:.92;word-break:keep-all;}
   .ar-try-step p strong{color:var(--gold);}
   .ar-qr, .ar-marker{
     width:150px;height:150px;border-radius:12px;background:#fff;padding:8px;
@@ -1117,7 +1119,7 @@
       <ol class="ar-steps">
         <li><span class="ar-num">1</span>스마트폰에서 직접 만든 AR 앱을 실행합니다.</li>
         <li><span class="ar-num">2</span>카메라로 <strong>HIRO 마커</strong>를 비춥니다.</li>
-        <li><span class="ar-num">3</span>마커 위에 <strong>투탕카멘 황금 가면</strong>이 3D로 팝업되어, 돌려보고 다가가며 관람할 수 있습니다.</li>
+        <li><span class="ar-num">3</span>마커 위에 <strong>투탕카멘 가면</strong>이 3D로 떠올라, 직접 돌려보며 관람할 수 있습니다.</li>
       </ol>
       <p class="ar-note">VR(가상 전시) · AR(증강 현실) · 3D 웹 뷰어까지 — 하나의 유물을 세 가지 XR 방식으로 감상할 수 있는 전시입니다.<span class="en">Virtual reality, augmented reality, and a 3D web viewer — one artifact, three ways to experience it.</span></p>
     </div>
