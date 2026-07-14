@@ -208,6 +208,48 @@
   }
   .section-sub{text-align:center;color:var(--dusk-deep);opacity:.85;margin-bottom:48px;font-size:1rem;}
 
+  /* ===== AR 체험 섹션 ===== */
+  .ar-wrap{
+    display:grid;
+    grid-template-columns:minmax(0,0.9fr) minmax(0,1.1fr);
+    gap:36px;align-items:center;
+    margin-top:8px;
+  }
+  .ar-photo{
+    margin:0;border-radius:20px;overflow:hidden;
+    border:1px solid rgba(245,198,109,.3);
+    background:linear-gradient(160deg,#3a2018,#241310);
+    box-shadow:0 14px 36px rgba(91,46,34,.32);
+  }
+  .ar-photo img{width:100%;height:auto;display:block;filter:sepia(.12) saturate(.96);}
+  .ar-photo figcaption{
+    padding:12px 16px;text-align:center;
+    font-family:'Cinzel','Noto Sans KR',serif;font-size:.8rem;letter-spacing:.06em;
+    color:var(--cream);background:rgba(43,20,14,.55);
+  }
+  .ar-lead{color:var(--dusk-deep);line-height:1.85;font-size:1.02rem;margin-bottom:22px;}
+  .ar-steps{list-style:none;margin:0 0 22px;padding:0;display:flex;flex-direction:column;gap:14px;}
+  .ar-steps li{
+    display:flex;align-items:flex-start;gap:14px;
+    color:var(--dusk-deep);line-height:1.7;font-size:.98rem;
+  }
+  .ar-num{
+    flex:0 0 auto;width:30px;height:30px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cinzel',serif;font-weight:700;font-size:.95rem;
+    color:var(--cream);background:linear-gradient(135deg,var(--gold),var(--sand-deep));
+    box-shadow:0 3px 8px rgba(138,75,47,.3);
+  }
+  .ar-note{
+    border-left:3px solid var(--nile);
+    padding:12px 16px;border-radius:0 10px 10px 0;
+    background:rgba(47,156,166,.09);
+    color:var(--dusk-deep);font-size:.92rem;line-height:1.7;
+  }
+  @media (max-width:760px){
+    .ar-wrap{grid-template-columns:1fr;gap:24px;}
+  }
+
   /* ===== 입장(오프닝 영상) 섹션 ===== */
   .enter-section{
     position:relative;
@@ -591,6 +633,7 @@
     <a href="#works">작품</a>
     <a href="#process">제작 과정</a>
     <a href="#vr">VR 전시</a>
+    <a href="#ar">AR</a>
     <a href="#song">테마곡</a>
   </div>
 </nav>
@@ -1001,6 +1044,28 @@
     <span class="vr-preview-label">미리보기 · Preview</span>
   </div>
   <button class="btn btn-vr reveal" onclick="openModal()"><span>VR 이집트 여행 · VR Egypt Tour</span></button>
+</section>
+
+<!-- ===== AR 체험 섹션 ===== -->
+<section id="ar" class="ar-section">
+  <p class="eyebrow reveal">AR EXPERIENCE</p>
+  <h2 class="section-title reveal">AR 체험 · 손 안의 유물</h2>
+  <p class="section-sub reveal">직접 만든 AR 앱으로, 마커를 비추면 눈앞 현실 공간에 유물이 나타납니다.<span class="sub-en">With a self-built AR app, point your phone at the marker and the artifact appears in your real space.</span></p>
+  <div class="ar-wrap reveal">
+    <figure class="ar-photo">
+      <img src="AR 활용한 폰 화면속 3D 유물 팝업.jpg" alt="폰 카메라로 HIRO 마커를 비추자 투탕카멘 마스크 3D 모델이 나타난 AR 화면" loading="lazy">
+      <figcaption>HIRO 마커를 비추면 나타나는 투탕카멘 마스크</figcaption>
+    </figure>
+    <div class="ar-text">
+      <p class="ar-lead">VR이 전시관 <strong>안으로 들어가는</strong> 경험이라면, AR은 유물을 <strong>내 공간으로 불러오는</strong> 경험입니다. 마커 인식 기반 AR 프로그램을 직접 제작해, 스마트폰 카메라만으로 3천 년 전 유물을 눈앞에 띄웠습니다.</p>
+      <ol class="ar-steps">
+        <li><span class="ar-num">1</span>스마트폰에서 직접 만든 AR 앱을 실행합니다.</li>
+        <li><span class="ar-num">2</span>카메라로 <strong>HIRO 마커</strong>를 비춥니다.</li>
+        <li><span class="ar-num">3</span>마커 위에 <strong>투탕카멘 황금 가면</strong>이 3D로 팝업되어, 돌려보고 다가가며 관람할 수 있습니다.</li>
+      </ol>
+      <p class="ar-note">VR(가상 전시) · AR(증강 현실) · 3D 웹 뷰어까지 — 하나의 유물을 세 가지 XR 방식으로 감상할 수 있는 전시입니다.<span class="en">Virtual reality, augmented reality, and a 3D web viewer — one artifact, three ways to experience it.</span></p>
+    </div>
+  </div>
 </section>
 
 <section id="song">
