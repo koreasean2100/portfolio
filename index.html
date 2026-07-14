@@ -148,12 +148,35 @@
     font-size:.92rem;letter-spacing:.08em;opacity:.85;
     transition:color .25s ease, opacity .25s ease;
   }
-  .nav-links a:hover{color:var(--gold);opacity:1;}
+  .nav-links a:hover, .nav-links a.active{color:var(--gold);opacity:1;}
+  .nav-links a.active{text-shadow:0 0 12px rgba(245,198,109,.45);}
   @media (max-width:560px){
-    .nav{padding:12px 16px;}
-    .nav .logo{font-size:.78rem;letter-spacing:.12em;}
-    .nav-links a{margin-left:14px;font-size:.84rem;}
+    .nav{padding:12px 12px;}
+    .nav .logo{font-size:.72rem;letter-spacing:.1em;}
+    .nav-links{max-width:66vw;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+    .nav-links::-webkit-scrollbar{display:none;}
+    .nav-links a{margin-left:12px;font-size:.8rem;letter-spacing:.04em;}
   }
+  /* 스크롤 진행 바 */
+  #scrollbar{
+    position:fixed;top:0;left:0;height:3px;width:0;z-index:60;
+    background:linear-gradient(90deg, var(--gold), var(--nile));
+    box-shadow:0 0 8px rgba(245,198,109,.5);
+    transition:width .12s linear;
+  }
+  /* 3D 뷰어 로딩 스피너 */
+  .card-3d .mv-spinner{
+    position:absolute;inset:0;z-index:4;display:none;
+    align-items:center;justify-content:center;
+    background:rgba(36,19,16,.45);pointer-events:none;
+  }
+  .card-3d.mv-loading .mv-spinner{display:flex;}
+  .mv-spinner span{
+    width:44px;height:44px;border-radius:50%;
+    border:4px solid rgba(255,246,232,.25);border-top-color:var(--gold);
+    animation:mvspin .8s linear infinite;
+  }
+  @keyframes mvspin{to{transform:rotate(360deg);}}
 
   /* ===== 섹션 라벨 ===== */
   .eyebrow{
@@ -206,7 +229,7 @@
     border-radius:2px;
     background:linear-gradient(90deg, var(--gold) 0%, var(--sky-low) 60%, var(--nile) 100%);
   }
-  .section-sub{text-align:center;color:var(--dusk-deep);opacity:.85;margin-bottom:48px;font-size:1rem;}
+  .section-sub{text-align:center;color:var(--dusk-deep);opacity:.85;margin:0 auto 48px;font-size:1rem;max-width:620px;}
 
   /* ===== AR 체험 섹션 ===== */
   .ar-wrap{
@@ -555,6 +578,8 @@
     .wave span{animation:none!important;}
     .btn::before{display:none;}
     .vr-preview img{transition:none;}
+    .mv-spinner span{animation:none!important;}
+    #scrollbar{transition:none;}
   }
   .btn-gold{
     background:linear-gradient(90deg, var(--gold), var(--sand-deep));
@@ -667,6 +692,7 @@
     <a href="#song">테마곡</a>
   </div>
 </nav>
+<div id="scrollbar" aria-hidden="true"></div>
 
 <!-- ===== 첫 화면 ===== -->
 <header class="hero" id="home">
@@ -1341,6 +1367,45 @@ Lux aeterna in corde meo</pre>
     });
   }, {threshold:0.12});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // 스크롤 진행 바
+  const scrollbar = document.getElementById('scrollbar');
+  if(scrollbar){
+    const updateBar = ()=>{
+      const h=document.documentElement;
+      const max=h.scrollHeight-h.clientHeight;
+      scrollbar.style.width = (max>0 ? (h.scrollTop/max*100) : 0) + '%';
+    };
+    window.addEventListener('scroll', updateBar, {passive:true});
+    updateBar();
+  }
+
+  // 현재 보고 있는 섹션을 상단 메뉴에 강조
+  const navLinks = [...document.querySelectorAll('.nav-links a')];
+  const navTargets = navLinks.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  if(navTargets.length){
+    const navIO = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          const id = '#' + e.target.id;
+          navLinks.forEach(a=>a.classList.toggle('active', a.getAttribute('href')===id));
+        }
+      });
+    }, {rootMargin:'-45% 0px -50% 0px', threshold:0});
+    navTargets.forEach(t=>navIO.observe(t));
+  }
+
+  // 3D 뷰어: 모델 로딩 중 스피너 표시
+  document.querySelectorAll('.card-3d').forEach(card=>{
+    const sp = document.createElement('div');
+    sp.className = 'mv-spinner'; sp.setAttribute('aria-hidden','true');
+    sp.innerHTML = '<span></span>';
+    card.appendChild(sp);
+    const mv = card.querySelector('model-viewer');
+    const btn = card.querySelector('.mv-load');
+    if(btn) btn.addEventListener('click', ()=>card.classList.add('mv-loading'));
+    if(mv) mv.addEventListener('load', ()=>card.classList.remove('mv-loading'));
+  });
 
   // 입장 영상: 화면에 들어오면 처음부터 재생, 벗어나면 정지 (음소거라 배경음악과 겹치지 않음)
   const enterVideo = document.querySelector('.enter-video');
